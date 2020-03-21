@@ -7,8 +7,8 @@ ENV ZK_USER=zookeeper \
     JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 ARG GPG_KEY=C823E3E5B12AF29C67F81976F5CECB3CB5E9BD2D
-ARG ZK_DIST0=zookeeper-3.5.7
-ARG ZK_DIST=apache-zookeeper-3.5.7-bin
+ARG ZK_DIST0=zookeeper-3.4.10
+ARG ZK_DIST=zookeeper-3.4.10
 
 RUN set -x \
     && apt-get update \
@@ -17,9 +17,9 @@ RUN set -x \
     && wget -q "https://downloads.apache.org/zookeeper/$ZK_DIST0/$ZK_DIST.tar.gz.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
     && gpg --keyserver ha.pool.sks-keyservers.net --recv-key "$GPG_KEY" \
-#    && gpg --batch --verify "$ZK_DIST.tar.gz.asc" "$ZK_DIST.tar.gz" \
+    && gpg --batch --verify "$ZK_DIST.tar.gz.asc" "$ZK_DIST.tar.gz" \
     && tar -xzf "$ZK_DIST.tar.gz" -C /opt \
-#    && rm -r "$GNUPGHOME" "$ZK_DIST.tar.gz" "$ZK_DIST.tar.gz.asc" \
+    && rm -r "$GNUPGHOME" "$ZK_DIST.tar.gz" "$ZK_DIST.tar.gz.asc" \
     && ln -s /opt/$ZK_DIST /opt/zookeeper \
     && rm -rf /opt/zookeeper/CHANGES.txt \
     /opt/zookeeper/README.txt \
